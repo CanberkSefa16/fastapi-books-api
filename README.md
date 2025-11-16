@@ -32,6 +32,8 @@ DELETE /books/{id} — Delete a book
 
 GET /health — Health check
 
+GET /books{id} — Get book by id
+
 
 
 Requirements

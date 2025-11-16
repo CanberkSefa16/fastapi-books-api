@@ -41,6 +41,28 @@ def get_all_books():
 
     return books
 
+@app.get("/books/{id}", response_model=BookOut)
+def get_book_by_id(id: int):
+
+    conn = sqlite3.connect("books.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM Book WHERE id=?", (id,))
+    book = cursor.fetchone()
+
+    if book is None:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Book not found!")
+    
+    conn.close()
+
+    return {
+        "id": book[0],
+        "title": book[1],
+        "author": book[2],
+        "page_size": book[3]
+    }
+
 @app.post("/books", response_model=BookOut)
 def create_book(book: BookCreate):
     
